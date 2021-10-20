@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import app from "../config/firebase";
-import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
+import { useAuth } from "../contexts/AuthContext";
 
 const SignUp = () => {
   const [data, setData] = useState({
@@ -12,43 +12,45 @@ const SignUp = () => {
     password: "",
   });
 
-  const auth = getAuth(app);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const { signup } = useAuth();
   const db = getFirestore(app);
+
+  const history = useHistory();
 
   const onChangeHandler = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
     console.log(data);
+
+    try {
+      setError("");
+      setLoading(true);
+      await signup(data.email, data.password);
+      history.push("/dashboard");
+    } catch {
+      setError("Failed to create an account");
+    }
+    setLoading(false);
+
     addToDatabase(data);
   };
-
-  // const addToDatabase = (data) => {
-  //   const t_Id = new Date().getTime().toString();
-  //   console.log(t_Id);
-  //   db.collection("users")
-  //     .doc(t_Id)
-  //     .set(data)
-  //     .then(() => {
-  //       console.log("User successfully stored!");
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error storing user: ", error);
-  //     });
-  // };
 
   const addToDatabase = async (data) => {
     const t_Id = new Date().getTime().toString();
     console.log(t_Id);
 
-    // Add a new document in collection "cities"
     await setDoc(doc(db, "users", t_Id), data);
   };
 
   return (
     <>
+    {error && <h1>{error}</h1>}
       <form onSubmit={onSubmitHandler}>
         <h1>Sign up</h1>
         <div>
@@ -88,7 +90,7 @@ const SignUp = () => {
           />
         </div>
         <div>
-          <input type="submit" value="Sign Up" />
+          <input type="submit" value="Sign Up" disabled={loading} />
         </div>
       </form>
       <div>
