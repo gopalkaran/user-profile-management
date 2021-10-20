@@ -6,6 +6,7 @@ import Dashboard from "./components/Dashboard";
 import Reset from "./components/Reset";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
           <Switch>
             <Route path="/" exact component={Login} />
             <Route path="/signup" component={SignUp} />
-            <Route path="/dashboard" component={Dashboard} />
+            <PrivateRoute path="/dashboard" component={Dashboard} />
             <Route path="/reset" component={Reset} />
           </Switch>
         </AuthProvider>
