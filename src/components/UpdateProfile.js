@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import app from "../config/firebase";
 import { getFirestore } from "firebase/firestore";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, onSnapshot } from "firebase/firestore";
 import { useAuth } from "../contexts/AuthContext";
 
 const UpdateProfile = () => {
@@ -12,10 +12,11 @@ const UpdateProfile = () => {
     password: "",
   });
 
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const { currentUser, updateemail, updatepassword } = useAuth();
+  const { currentUser, updateEmailId, updatePass } = useAuth();
   const db = getFirestore(app);
 
   const history = useHistory();
@@ -28,21 +29,29 @@ const UpdateProfile = () => {
     e.preventDefault();
     console.log(data);
 
+    console.log(currentUser);
+    console.log(currentUser.email);
+
     const promises = [];
 
     setError("");
     setLoading(true);
 
     if (data.email !== currentUser.email && data.email !== "") {
-      promises.push(updateemail(data.email));
+      console.log(currentUser.email, "=" , data.email);
+      promises.push(updateEmailId(data.email));
+      
+      // console.log(data.email);
     }
 
     if (data.password) {
-      promises.push(updatepassword(data.password));
+      console.log(data.password);
+      promises.push(updatePass(data.password));
     }
 
     Promise.all(promises)
       .then(() => {
+        console.log(currentUser.email);
         updateToDatabase(data, currentUser.uid);
         history.push("/dashboard");
       })
@@ -56,9 +65,21 @@ const UpdateProfile = () => {
 
   const updateToDatabase = async (data, u_id) => {
     const userRef = doc(db, "users", u_id);
-
+    
     await updateDoc(userRef, data);
   };
+
+
+  useEffect(() => {
+    console.log("user_id: ", currentUser.uid);
+    const unsub = onSnapshot(doc(db, "users", currentUser.uid), (doc) => {
+      console.log("Current data: ", doc.data());
+      const user = doc.data();
+      const {name , email, password} = user;
+      setData({name : name, email : email, password : password});
+    });
+    return unsub;
+  }, []);
 
   return (
     <>
@@ -69,6 +90,7 @@ const UpdateProfile = () => {
           <label htmlFor="name" className="form-label">
             Name
           </label>
+
           <input
             type="text"
             name="name"
@@ -76,6 +98,7 @@ const UpdateProfile = () => {
             className="form-input"
             onChange={onChangeHandler}
           />
+
         </div>
         <div>
           <label htmlFor="email" className="form-label">
@@ -84,10 +107,10 @@ const UpdateProfile = () => {
           <input
             type="text"
             name="email"
-            // value={currentUser? currentUser.email : data.email}
+            value={data.email}
             className="form-input"
             onChange={onChangeHandler}
-            defaultValue={currentUser ? currentUser.email : data.email}
+
           />
         </div>
         <div>
@@ -100,7 +123,7 @@ const UpdateProfile = () => {
             value={data.password}
             className="form-input"
             onChange={onChangeHandler}
-            placeholder="Keep the old password"
+
           />
         </div>
         <div>

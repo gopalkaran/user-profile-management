@@ -40,11 +40,11 @@ export const AuthProvider = ({ children }) => {
   }
 
 
-  function updateemail(email){
+  function updateEmailId(email){
       return updateEmail(currentUser, email);
   }
 
-  function updatepassword(password){
+  function updatePass(password){
     return updatePassword(currentUser, password);
 
   }
@@ -70,8 +70,8 @@ export const AuthProvider = ({ children }) => {
     signup,
     logout,
     resetPassword,
-    updateemail,
-    updatepassword
+    updateEmailId,
+    updatePass
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
