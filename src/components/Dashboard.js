@@ -12,6 +12,7 @@ const Dashboard = () => {
   const { currentUser, logout } = useAuth();
   const [error, setError] = useState("");
   const [userDetails, setUserDetails] = useState({});
+  const [uploaded, setUploaded] = useState(false);
 
   const [data, setData] = useState({
     address: "",
@@ -36,6 +37,10 @@ const Dashboard = () => {
 
     uploadBytes(storageRef, file).then((snapshot) => {
       console.log('Uploaded a blob or file!');
+      setUploaded(true);
+      setTimeout(() => {
+        setUploaded(false);
+      }, 3000);
       getDownloadURL(ref(storage, `${bucketName}/${file.name}`)).then((url)=>{
          console.log(url);
          setData({...data, image: {name: file.name , path: url}});
@@ -65,7 +70,10 @@ const Dashboard = () => {
       updateToDatabase(data, currentUser.uid);
       history.push("/dashboard");
     } catch {
-      setError("Failed to create an account");
+      setError("Failed to update the Database");
+      setTimeout(() => {
+        setError("");
+      }, 3000);
     }
     setLoading(false);
   }
@@ -89,6 +97,9 @@ const Dashboard = () => {
       history.push("/");
     } catch {
       setError("Failed to log out");
+      setTimeout(() => {
+        setError("");
+      }, 3000);
     }
   };
 
@@ -106,7 +117,8 @@ const Dashboard = () => {
     <>
     <div className={styles.detailContainerTop}>
       <h1>Profile</h1>
-      {error && <div style={styles.error}>{error}</div>}
+      {error && <div className={styles.error}>{error}</div>}
+      {uploaded && <div className={styles.error}>Image uploaded successfully</div>}
       <div className={styles.userDetailField}><span>Name : </span> {userDetails && <strong>{userDetails.name}</strong>}</div>
       <div className={styles.userDetailField}><span>Email : </span> {userDetails && <strong>{userDetails.email}</strong>}</div>
       </div>

@@ -31,6 +31,9 @@ const Login = () => {
       history.push("/dashboard");
     } catch {
       setError("Failed to sign in");
+      setTimeout(() => {
+        setError("");
+      }, 3000);
     }
     setLoading(false);
   };

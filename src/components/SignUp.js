@@ -39,6 +39,9 @@ const SignUp = () => {
       history.push("/dashboard");
     } catch {
       setError("Failed to create an account");
+      setTimeout(() => {
+        setError("");
+      }, 3000);
     }
     setLoading(false);
   };

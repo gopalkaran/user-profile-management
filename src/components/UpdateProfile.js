@@ -58,6 +58,9 @@ const UpdateProfile = () => {
       })
       .catch(() => {
         setError("Failed to update account");
+        setTimeout(() => {
+          setError("");
+        }, 3000);
       })
       .finally(() => {
         setLoading(false);

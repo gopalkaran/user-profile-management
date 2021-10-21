@@ -30,6 +30,9 @@ const Reset = () => {
       setMessage("Check your inbox for further instructions");
     } catch {
       setError("Failed to reset password");
+      setTimeout(() => {
+        setError("");
+      }, 3000);
     }
     setLoading(false);
   };
