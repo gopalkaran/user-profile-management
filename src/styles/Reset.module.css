@@ -1,7 +1,7 @@
 .container{
     background-color: white;
     width: 500px;
-    height: 30vh;
+    height: 35vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -9,6 +9,10 @@
     /* gap: 1rem; */
     border-radius: 0.5rem;
     margin-top: 2rem;
+}
+
+.container h1{
+    padding: 2rem;
 }
 
 .formGroup{
@@ -27,6 +31,7 @@
     justify-content: center;
     align-items: center;
     gap: 1rem;
+    padding: 1rem;
 }
 
 .error{
