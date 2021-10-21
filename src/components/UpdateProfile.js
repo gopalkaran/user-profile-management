@@ -84,7 +84,7 @@ const UpdateProfile = () => {
 
   return (
     <>
-      {error && <h1>{error}</h1>}
+      {error && <div className={styles.error}>{error}</div>}
       <form onSubmit={onSubmitHandler} className={styles.container}>
         <h1>Update Profile</h1>
         <div className={styles.formGroup}>

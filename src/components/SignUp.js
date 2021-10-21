@@ -49,7 +49,7 @@ const SignUp = () => {
 
   return (
     <>
-      {error && <h1>{error}</h1>}
+      {error && <div className={styles.error}>{error}</div>}
       <form onSubmit={onSubmitHandler} className={styles.container}>
         <h1>Sign up</h1>
         <div className={styles.formGroup}>

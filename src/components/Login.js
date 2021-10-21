@@ -76,9 +76,7 @@ const Login = () => {
         <p>Don't have an account?</p>
         <Link to="/signup">Sign up</Link>
       </div>
-      <div className={styles.error}>
-        {error && <p>{error}</p>}
-      </div>
+      {error && <div className={styles.error}>{error}</div>}
     </>
   );
 };

@@ -35,8 +35,8 @@ const Reset = () => {
   };
   return (
     <>
-      {error && <h1>{error}</h1>}
-      {message && <h1>{message}</h1>}
+      {error && <div className={styles.error}>{error}</div>}
+      {message && <div className={styles.error}>{message}</div>}
       <form onSubmit={onSubmitHandler} className={styles.container}>
         <h1>Reset Password</h1>
         <div className={styles.formGroup}>

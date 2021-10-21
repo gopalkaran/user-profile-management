@@ -106,7 +106,7 @@ const Dashboard = () => {
     <>
     <div className={styles.detailContainerTop}>
       <h1>Profile</h1>
-      {error && <h1>{error}</h1>}
+      {error && <div style={styles.error}>{error}</div>}
       <div className={styles.userDetailField}><span>Name : </span> {userDetails && <strong>{userDetails.name}</strong>}</div>
       <div className={styles.userDetailField}><span>Email : </span> {userDetails && <strong>{userDetails.email}</strong>}</div>
       </div>
