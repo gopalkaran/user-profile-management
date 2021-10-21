@@ -28,6 +28,9 @@ const Reset = () => {
       setLoading(true);
       await resetPassword(data.email);
       setMessage("Check your inbox for further instructions");
+      setTimeout(() => {
+        setMessage("");
+      }, 3000);
     } catch {
       setError("Failed to reset password");
       setTimeout(() => {
