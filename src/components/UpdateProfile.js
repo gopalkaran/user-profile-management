@@ -5,7 +5,7 @@ import { getFirestore } from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
 import { useAuth } from "../contexts/AuthContext";
 
-const SignUp = () => {
+const UpdateProfile = () => {
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -15,7 +15,7 @@ const SignUp = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const { signup, currentUser } = useAuth();
+  const { currentUser, updateemail, updatepassword } = useAuth();
   const db = getFirestore(app);
 
   const history = useHistory();
@@ -24,33 +24,57 @@ const SignUp = () => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  const onSubmitHandler = async (e) => {
+  const onSubmitHandler =  (e) => {
     e.preventDefault();
     console.log(data);
 
-    try {
-      setError("");
-      setLoading(true);
-      const user = await signup(data.email, data.password);
-      console.log(user.user.uid);
-      const user_id = user.user.uid;
-      addToDatabase(data, user_id);
-      history.push("/dashboard");
-    } catch {
-      setError("Failed to create an account");
+    const promises = [];
+
+    setError("");
+    setLoading(true);
+
+    if(data.email !== currentUser.email && data.email !== ''){
+        promises.push(updateemail(data.email))
     }
-    setLoading(false);
+
+    if(data.password){
+        promises.push(updatepassword(data.password))
+    }
+
+    Promise.all(promises).then(() => {
+        history.push("/dashboard");
+    })
+    .catch(() => {
+        setError("Failed to update account");
+    })
+    .finally(() => {
+        setLoading(false);
+    })
+
+    // try {
+
+    //   await signup(data.email, data.password);
+    //   history.push("/dashboard");
+    // } catch {
+    //   setError("Failed to create an account");
+    // }
+    // setLoading(false);
+
+    // addToDatabase(data);
   };
 
-  const addToDatabase = async (data, u_id) => {
-    await setDoc(doc(db, "users", u_id), data);
-  };
+//   const addToDatabase = async (data) => {
+//     const t_Id = new Date().getTime().toString();
+//     console.log(t_Id);
+
+//     await setDoc(doc(db, "users", t_Id), data);
+//   };
 
   return (
     <>
-      {error && <h1>{error}</h1>}
+    {error && <h1>{error}</h1>}
       <form onSubmit={onSubmitHandler}>
-        <h1>Sign up</h1>
+        <h1>Update Profile</h1>
         <div>
           <label htmlFor="name" className="form-label">
             Name
@@ -70,9 +94,10 @@ const SignUp = () => {
           <input
             type="text"
             name="email"
-            value={data.email}
+            // value={currentUser? currentUser.email : data.email}
             className="form-input"
             onChange={onChangeHandler}
+            defaultValue={currentUser? currentUser.email : data.email}
           />
         </div>
         <div>
@@ -85,18 +110,18 @@ const SignUp = () => {
             value={data.password}
             className="form-input"
             onChange={onChangeHandler}
+            placeholder="Keep the old password"
           />
         </div>
         <div>
-          <input type="submit" value="Sign Up" disabled={loading} />
+          <input type="submit" value="Update" disabled={loading} />
         </div>
       </form>
       <div>
-        <p>Have an account?</p>
-        <Link to="/">Log in</Link>
+        <Link to="/dashboard">Cancel</Link>
       </div>
     </>
   );
 };
 
-export default SignUp;
+export default UpdateProfile;
