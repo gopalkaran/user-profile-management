@@ -41,7 +41,7 @@ body{
   background-color: #F3F4F6;
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100vw;
+  /* align-items: center; */
+  /* height: 100vh; */
+  /* width: 100vw; */
 }

@@ -4,6 +4,7 @@ import app from "../config/firebase";
 import { getFirestore } from "firebase/firestore";
 import { doc, updateDoc, onSnapshot } from "firebase/firestore";
 import { useAuth } from "../contexts/AuthContext";
+import styles from "../styles/UpdateProfile.module.css";
 
 const UpdateProfile = () => {
   const [data, setData] = useState({
@@ -84,9 +85,9 @@ const UpdateProfile = () => {
   return (
     <>
       {error && <h1>{error}</h1>}
-      <form onSubmit={onSubmitHandler}>
+      <form onSubmit={onSubmitHandler} className={styles.container}>
         <h1>Update Profile</h1>
-        <div>
+        <div className={styles.formGroup}>
           <label htmlFor="name" className="form-label">
             Name
           </label>
@@ -100,7 +101,7 @@ const UpdateProfile = () => {
           />
 
         </div>
-        <div>
+        <div className={styles.formGroup}>
           <label htmlFor="email" className="form-label">
             Email
           </label>
@@ -113,7 +114,7 @@ const UpdateProfile = () => {
 
           />
         </div>
-        <div>
+        <div className={styles.formGroup}>
           <label htmlFor="password" className="form-label">
             Password
           </label>
@@ -130,7 +131,7 @@ const UpdateProfile = () => {
           <input type="submit" value="Update" disabled={loading} />
         </div>
       </form>
-      <div>
+      <div className={styles.cancel}>
         <Link to="/dashboard">Cancel</Link>
       </div>
     </>

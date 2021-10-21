@@ -5,6 +5,7 @@ import app from "../config/firebase";
 import { getFirestore } from "firebase/firestore";
 import { doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL  } from "firebase/storage";
+import styles from "../styles/Dashboard.module.css";
 
 
 const Dashboard = () => {
@@ -103,21 +104,24 @@ const Dashboard = () => {
 
   return (
     <>
+    <div className={styles.detailContainerTop}>
       <h1>Profile</h1>
       {error && <h1>{error}</h1>}
-      <div>Name : {userDetails && <strong>{userDetails.name}</strong>}</div>
-      <div>Email : {userDetails && <strong>{userDetails.email}</strong>}</div>
-      {userDetails.address && userDetails.dob && userDetails.image ? <>
-            <div>Address : {userDetails && <strong>{userDetails.address}</strong>}</div>
-            <div>DOB : {userDetails && <strong>{userDetails.dob}</strong>}</div>
-            <div><img src={userDetails.image.path} alt={userDetails.image.name} style={{height: '200px', width:'200px'}}></img></div>
-            </>
+      <div className={styles.userDetailField}><span>Name : </span> {userDetails && <strong>{userDetails.name}</strong>}</div>
+      <div className={styles.userDetailField}><span>Email : </span> {userDetails && <strong>{userDetails.email}</strong>}</div>
+      </div>
+      {userDetails.address && userDetails.dob && userDetails.image ? <div className={styles.detailContainerBottom}>
+            <div className={styles.userDetailField}><span>Address : </span> {userDetails && <strong>{userDetails.address}</strong>}</div>
+            <div className={styles.userDetailField}><span>DOB : </span> {userDetails && <strong>{userDetails.dob}</strong>}</div>
+            <div className={styles.userDetailField}><img src={userDetails.image.path} alt={userDetails.image.name} style={{height: '200px', width:'200px'}}></img></div>
+            </div>
+            
             : 
       
     
-      <form onSubmit={onSubmitHandler}>
+      <form onSubmit={onSubmitHandler} className={styles.container}>
         <h1>Profile Details</h1>
-        <div>
+        <div className={styles.formGroup}>
           <label htmlFor="name" className="form-label">
             Address
           </label>
@@ -129,7 +133,7 @@ const Dashboard = () => {
             onChange={onChangeHandler}
           />
         </div>
-        <div>
+        <div className={styles.formGroup}>
           <label htmlFor="email" className="form-label">
             Date of Birth
           </label>
@@ -141,7 +145,7 @@ const Dashboard = () => {
             onChange={onChangeHandler}
           />
         </div>
-        <div>
+        <div className={styles.formGroup}>
           <input type="file" id="image" name="image" onChange={fileChangedHandler} />
           <input type="button" value="Upload" onClick={uploadHandler} />
         </div>
@@ -150,8 +154,10 @@ const Dashboard = () => {
         </div>
       </form>
 }
+      <div className={styles.signout}>
       <Link to="/update-profile">Update Profile</Link>
-      <div>
+      </div>
+      <div className={styles.signout}>
         <button onClick={signoutUser}>Sign out</button>
       </div>
     </>
