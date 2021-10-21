@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import styles from '../styles/Login.module.css';
 
 const Login = () => {
   const [data, setData] = useState({
@@ -35,10 +36,11 @@ const Login = () => {
   };
   return (
     <>
-    {error && <h1>{error}</h1>}
-      <form onSubmit={onSubmitHandler}>
+    <div className={styles.container}>
+    
+      <form onSubmit={onSubmitHandler} className={styles.form}>
         <h1>Log in</h1>
-        <div>
+        <div className={styles.formGroup}>
           <label htmlFor="email" className="form-label">
             Email
           </label>
@@ -50,7 +52,7 @@ const Login = () => {
             onChange={onChangeHandler}
           />
         </div>
-        <div>
+        <div className={styles.formGroup}>
           <label htmlFor="password" className="form-label">
             Password
           </label>
@@ -69,9 +71,13 @@ const Login = () => {
       <div>
         <Link to="/reset">Forgot password?</Link>
       </div>
-      <div>
+      </div>
+      <div className={styles.signUp}>
         <p>Don't have an account?</p>
         <Link to="/signup">Sign up</Link>
+      </div>
+      <div className={styles.error}>
+        {error && <p>{error}</p>}
       </div>
     </>
   );

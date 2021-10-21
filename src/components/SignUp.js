@@ -4,6 +4,7 @@ import app from "../config/firebase";
 import { getFirestore } from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
 import { useAuth } from "../contexts/AuthContext";
+import styles from "../styles/SignUp.module.css";
 
 const SignUp = () => {
   const [data, setData] = useState({
@@ -49,9 +50,9 @@ const SignUp = () => {
   return (
     <>
       {error && <h1>{error}</h1>}
-      <form onSubmit={onSubmitHandler}>
+      <form onSubmit={onSubmitHandler} className={styles.container}>
         <h1>Sign up</h1>
-        <div>
+        <div className={styles.formGroup}>
           <label htmlFor="name" className="form-label">
             Name
           </label>
@@ -63,7 +64,7 @@ const SignUp = () => {
             onChange={onChangeHandler}
           />
         </div>
-        <div>
+        <div className={styles.formGroup}>
           <label htmlFor="email" className="form-label">
             Email
           </label>
@@ -75,7 +76,7 @@ const SignUp = () => {
             onChange={onChangeHandler}
           />
         </div>
-        <div>
+        <div className={styles.formGroup}>
           <label htmlFor="password" className="form-label">
             Password
           </label>
@@ -91,7 +92,7 @@ const SignUp = () => {
           <input type="submit" value="Sign Up" disabled={loading} />
         </div>
       </form>
-      <div>
+      <div className={styles.login}>
         <p>Have an account?</p>
         <Link to="/">Log in</Link>
       </div>

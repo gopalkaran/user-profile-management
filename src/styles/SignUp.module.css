@@ -1,0 +1,36 @@
+.container{
+    background-color: white;
+    width: 500px;
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1rem;
+    border-radius: 0.5rem;
+}
+
+.formGroup{
+    background-color: #F3F4F6;
+    display: flex;
+    justify-content: space-between;
+    /* margin-bottom: 0.5rem; */
+    width: 50%;
+}
+
+.login{
+    display: flex;
+    background-color: white;
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.error{
+    background-color: white;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+    
+}
