@@ -110,7 +110,7 @@ const Dashboard = () => {
       {userDetails.address && userDetails.dob && userDetails.image ? <>
             <div>Address : {userDetails && <strong>{userDetails.address}</strong>}</div>
             <div>DOB : {userDetails && <strong>{userDetails.dob}</strong>}</div>
-            <div><img src={userDetails.image.path} style={{height: '200px', width:'200px'}}></img></div>
+            <div><img src={userDetails.image.path} alt={userDetails.image.name} style={{height: '200px', width:'200px'}}></img></div>
             </>
             : 
       

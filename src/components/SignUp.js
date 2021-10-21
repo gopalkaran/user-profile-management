@@ -15,7 +15,7 @@ const SignUp = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const { signup, currentUser } = useAuth();
+  const { signup } = useAuth();
   const db = getFirestore(app);
 
   const history = useHistory();

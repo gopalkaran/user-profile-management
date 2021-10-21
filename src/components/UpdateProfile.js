@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import app from "../config/firebase";
 import { getFirestore } from "firebase/firestore";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { useAuth } from "../contexts/AuthContext";
 
 const UpdateProfile = () => {
@@ -24,7 +24,7 @@ const UpdateProfile = () => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  const onSubmitHandler =  (e) => {
+  const onSubmitHandler = (e) => {
     e.preventDefault();
     console.log(data);
 
@@ -33,46 +33,36 @@ const UpdateProfile = () => {
     setError("");
     setLoading(true);
 
-    if(data.email !== currentUser.email && data.email !== ''){
-        promises.push(updateemail(data.email))
+    if (data.email !== currentUser.email && data.email !== "") {
+      promises.push(updateemail(data.email));
     }
 
-    if(data.password){
-        promises.push(updatepassword(data.password))
+    if (data.password) {
+      promises.push(updatepassword(data.password));
     }
 
-    Promise.all(promises).then(() => {
+    Promise.all(promises)
+      .then(() => {
+        updateToDatabase(data, currentUser.uid);
         history.push("/dashboard");
-    })
-    .catch(() => {
+      })
+      .catch(() => {
         setError("Failed to update account");
-    })
-    .finally(() => {
+      })
+      .finally(() => {
         setLoading(false);
-    })
-
-    // try {
-
-    //   await signup(data.email, data.password);
-    //   history.push("/dashboard");
-    // } catch {
-    //   setError("Failed to create an account");
-    // }
-    // setLoading(false);
-
-    // addToDatabase(data);
+      });
   };
 
-//   const addToDatabase = async (data) => {
-//     const t_Id = new Date().getTime().toString();
-//     console.log(t_Id);
+  const updateToDatabase = async (data, u_id) => {
+    const userRef = doc(db, "users", u_id);
 
-//     await setDoc(doc(db, "users", t_Id), data);
-//   };
+    await updateDoc(userRef, data);
+  };
 
   return (
     <>
-    {error && <h1>{error}</h1>}
+      {error && <h1>{error}</h1>}
       <form onSubmit={onSubmitHandler}>
         <h1>Update Profile</h1>
         <div>
@@ -97,7 +87,7 @@ const UpdateProfile = () => {
             // value={currentUser? currentUser.email : data.email}
             className="form-input"
             onChange={onChangeHandler}
-            defaultValue={currentUser? currentUser.email : data.email}
+            defaultValue={currentUser ? currentUser.email : data.email}
           />
         </div>
         <div>
