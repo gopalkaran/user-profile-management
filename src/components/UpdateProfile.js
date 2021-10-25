@@ -53,7 +53,7 @@ const UpdateProfile = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const { currentUser, updateEmailId, updatePass } = useAuth();
+  const { currentUser } = useAuth();
   const db = getFirestore(app);
   const storage = getStorage(app);
 
