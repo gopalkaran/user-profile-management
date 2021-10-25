@@ -111,7 +111,7 @@ const Dashboard = () => {
       setUserDetails(user);
     });
     return unsub;
-  }, []);
+  }, [db, currentUser.uid]);
 
   return (
     <>

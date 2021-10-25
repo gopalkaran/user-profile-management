@@ -127,6 +127,13 @@ const UpdateProfile = () => {
     }
     setLoading(false);
   }
+  else{
+    setError("Please fill all the field");
+    setTimeout(() => {
+      setError("");
+    }, 3000);
+    return;
+  }
   };
 
   const updateToDatabase = async (data, u_id) => {
@@ -141,11 +148,11 @@ const UpdateProfile = () => {
     const unsub = onSnapshot(doc(db, "users", currentUser.uid), (doc) => {
       console.log("Current data: ", doc.data());
       const user = doc.data();
-      const {name , address, dob} = user;
-      setData({name : name, address : address, dob : dob});
+      const {name , address, dob, image} = user;
+      setData({name:name, address:address, dob:dob, image:{name:image.name, path:image.path}});
     });
     return unsub;
-  }, []);
+  }, [db, currentUser.uid]);
 
   return (
     <>
